@@ -7,7 +7,7 @@ class NoteRepository(private val dataSource: NoteDataSource) {
 
     suspend fun get(id: Long): Note? = dataSource.get(id)
 
-    suspend fun getApp() = dataSource.getAll()
+    suspend fun getAll() = dataSource.getAll()
 
     suspend fun remove(note: Note) = dataSource.remove(note)
 }
