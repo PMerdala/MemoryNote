@@ -18,7 +18,7 @@ data class NoteEntity(
 ) {
     companion object {
         fun fromNote(note: Note) =
-            NoteEntity(note.title, note.content, note.creationDate, note.updateDate)
+            NoteEntity(note.title, note.content, note.creationDate, note.updateDate, note.id)
     }
 
     fun toNote() = Note(title, content, creationDate, updateDate, id)

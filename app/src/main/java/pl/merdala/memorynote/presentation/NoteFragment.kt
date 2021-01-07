@@ -24,7 +24,7 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
 
     private var noteId = 0L
     private lateinit var noteViewModel: NoteViewModel
-    private val currentNote = Note("", "", 0, 0)
+    private var currentNote = Note("", "", 0, 0)
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -115,8 +115,7 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
     }
 
     private fun putDateIntoCurrentNoteFromNote(note: Note) {
-        currentNote.title = note.title
-        currentNote.content = note.content
+        currentNote = note
     }
 
     private fun showToast(@StringRes resId: Int) {
