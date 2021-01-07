@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Memory Note</string>
     <string name="add_new_note_button">add new note</string>
+    <string name="title_hint">Title</string>
+    <string name="save_note_button">Save note</string>
+    <string name="content_hint">Content</string>
 </resources>
