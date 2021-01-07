@@ -9,10 +9,19 @@ class NoteViewModel(application: Application) : AbstractViewModel(application) {
 
     val saved = MutableLiveData<Boolean>()
 
+    val currentNote = MutableLiveData<Note?>()
+
     fun saveNote(note: Note) {
         coroutineScope.launch {
             useCases.addNote(note)
             saved.postValue(true)
+        }
+    }
+
+    fun getNote(id: Long) {
+        coroutineScope.launch {
+            val note = useCases.getNote(id)
+            currentNote.postValue(note)
         }
     }
 }

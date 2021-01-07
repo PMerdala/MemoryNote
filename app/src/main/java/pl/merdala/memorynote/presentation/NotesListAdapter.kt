@@ -10,7 +10,7 @@ import pl.merdala.memorynote.databinding.ItemNoteBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NotesListAdapter(private var notes: ArrayList<Note>) :
+class NotesListAdapter(private val notes: ArrayList<Note>, private val action: ListAction) :
     RecyclerView.Adapter<NotesListAdapter.NoteViewHolder>() {
 
     fun updateNotes(newNotes: List<Note>) {
@@ -42,12 +42,9 @@ class NotesListAdapter(private var notes: ArrayList<Note>) :
                 binding.root.context.getString(R.string.item_note_last_update_date_format)
             )
             val lastUpdateDate = Date(note.updateDate)
-            binding.updateDate.text =
-                binding.updateDate.context.getString(R.string.last_update).format(
-                    sdf.format(
-                        lastUpdateDate
-                    )
-                )
+            binding.updateDate.text = binding.updateDate.context.getString(R.string.last_update)
+                .format(sdf.format(lastUpdateDate))
+            binding.itemNoteLayout.setOnClickListener { action.onClick(note.id) }
         }
     }
 

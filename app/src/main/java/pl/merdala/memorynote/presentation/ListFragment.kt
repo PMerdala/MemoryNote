@@ -14,11 +14,11 @@ import pl.merdala.memorynote.framework.ListViewModel
 /**
  * A simple [Fragment] subclass.
  */
-class ListFragment : AbstractBindingFragment<FragmentListBinding>() {
+class ListFragment : AbstractBindingFragment<FragmentListBinding>(), ListAction {
 
     private lateinit var listViewModel: ListViewModel
 
-    private var notesListAdapter = NotesListAdapter(arrayListOf())
+    private var notesListAdapter = NotesListAdapter(arrayListOf(), this)
 
     override fun onViewCreated(view: View, savedInstanceState: android.os.Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,5 +53,9 @@ class ListFragment : AbstractBindingFragment<FragmentListBinding>() {
         container: ViewGroup?
     ): FragmentListBinding {
         return FragmentListBinding.inflate(inflater, container, false)
+    }
+
+    override fun onClick(id: Long) {
+        goToNoteDetails(id)
     }
 }

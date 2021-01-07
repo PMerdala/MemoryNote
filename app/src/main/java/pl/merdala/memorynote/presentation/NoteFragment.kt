@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import pl.merdala.memorynote.framework.NoteViewModel
  */
 class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
 
+    private var noteId = 0L
     private lateinit var noteViewModel: NoteViewModel
     private val currentNote = Note("", "", 0, 0)
 
@@ -33,16 +35,38 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        prepareNoteViewModel()
+        loadArgumentsToVariables()
+        loadNoteIfPresent()
+        prepareCheckButtonListener()
+        observeViewModel()
+    }
+
+    private fun loadNoteIfPresent() {
+        if (noteId != 0L) {
+            noteViewModel.getNote(noteId)
+        }
+    }
+
+    private fun prepareCheckButtonListener() {
         binding.checkButton.setOnClickListener {
             if (isDataComplete()) {
-                putDataIntoCurrentNote()
+                putDataIntoCurrentNoteFromView()
                 noteViewModel.saveNote(currentNote)
             } else {
                 navigateBackAndHideKeyboard(it)
             }
         }
-        observeViewModel()
+    }
+
+    private fun prepareNoteViewModel() {
+        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+    }
+
+    private fun loadArgumentsToVariables() {
+        arguments?.let {
+            noteId = NoteFragmentArgs.fromBundle(it).noteId
+        }
     }
 
     private fun navigateBackAndHideKeyboard(view: View) {
@@ -61,6 +85,11 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
     }
 
     private fun observeViewModel() {
+        observeSavedViewModel()
+        observeCurrentNoteViewModel()
+    }
+
+    private fun observeSavedViewModel() {
         noteViewModel.saved.observe(viewLifecycleOwner, {
             if (it) {
                 showToast(R.string.done)
@@ -71,11 +100,30 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
         })
     }
 
+    private fun observeCurrentNoteViewModel() {
+        noteViewModel.currentNote.observe(viewLifecycleOwner, {
+            it?.let {
+                putDateIntoCurrentNoteFromNote(it)
+                fillViewFromCurrentNote()
+            }
+        })
+    }
+
+    private fun fillViewFromCurrentNote() {
+        binding.titleView.setText(currentNote.title, TextView.BufferType.EDITABLE)
+        binding.contentView.setText(currentNote.content, TextView.BufferType.EDITABLE)
+    }
+
+    private fun putDateIntoCurrentNoteFromNote(note: Note) {
+        currentNote.title = note.title
+        currentNote.content = note.content
+    }
+
     private fun showToast(@StringRes resId: Int) {
         Toast.makeText(context, getString(resId), Toast.LENGTH_SHORT).show()
     }
 
-    private fun putDataIntoCurrentNote() {
+    private fun putDataIntoCurrentNoteFromView() {
         val time: Long = System.currentTimeMillis()
         currentNote.title = binding.titleView.text.toString()
         currentNote.content = binding.contentView.text.toString()
@@ -86,7 +134,7 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
     }
 
     private fun isDataComplete(): Boolean {
-        return !"".equals(binding.titleView.text.toString().trim())
-                || !"".equals(binding.contentView.text.toString().trim())
+        return "" != binding.titleView.text.toString().trim()
+                || "" != binding.contentView.text.toString().trim()
     }
 }
