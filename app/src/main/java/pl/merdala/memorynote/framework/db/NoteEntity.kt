@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import pl.merdala.core.data.Note
 
-@Entity
+@Entity(tableName = "notes")
 data class NoteEntity(
     val title: String,
     val content: String,
