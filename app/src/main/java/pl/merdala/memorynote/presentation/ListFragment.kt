@@ -1,21 +1,32 @@
 package pl.merdala.memorynote.presentation
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import pl.merdala.memorynote.R
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
+import pl.merdala.memorynote.databinding.FragmentListBinding
 
 /**
  * A simple [Fragment] subclass.
  */
-class ListFragment : Fragment() {
+class ListFragment : AbstractBindingFragment<FragmentListBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_list, container, false)
+
+    override fun onViewCreated(view: android.view.View, savedInstanceState: android.os.Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.addNote.setOnClickListener { goToNoteDetails() }
+    }
+
+    private fun goToNoteDetails(id: Long = 0) {
+        val action: NavDirections = ListFragmentDirections.actionGoToNote(id)
+        Navigation.findNavController(binding.notesListView).navigate(action)
+    }
+
+    override fun getBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentListBinding {
+        return FragmentListBinding.inflate(inflater, container, false)
     }
 }
