@@ -6,4 +6,6 @@
     <string name="content_hint">Content</string>
     <string name="note_save_somethig_went_wrong">Something went wrong, please try again</string>
     <string name="done">Done!</string>
+    <string name="item_note_last_update_date_format">dd MMM yyyy HH:mm:ss</string>
+    <string name="last_update">Last update: %s</string>
 </resources>
