@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Memory Note</string>
+    <string name="add_new_note_button">add new note</string>
 </resources>
