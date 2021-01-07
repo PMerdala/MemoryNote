@@ -8,4 +8,9 @@
     <string name="done">Done!</string>
     <string name="item_note_last_update_date_format">dd MMM yyyy HH:mm:ss</string>
     <string name="last_update">Last update: %s</string>
+    <string name="delete_note">Delete note</string>
+    <string name="delete_note_message">Are you sure, you want to delete this note?</string>
+    <string name="answer_yes">Yes</string>
+    <string name="answer_no">No</string>
+    <string name="canceled_delete">Deletion was canceled</string>
 </resources>

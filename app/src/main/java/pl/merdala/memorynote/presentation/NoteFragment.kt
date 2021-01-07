@@ -2,13 +2,12 @@ package pl.merdala.memorynote.presentation
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -33,6 +32,11 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
         return FragmentNoteBinding.inflate(inflater, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prepareNoteViewModel()
@@ -40,6 +44,37 @@ class NoteFragment : AbstractBindingFragment<FragmentNoteBinding>() {
         loadNoteIfPresent()
         prepareCheckButtonListener()
         observeViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.note_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.deleteNote -> {
+                if (noteId != 0L) {
+                    createAndShowDeleteAlertDialog()
+                    return true
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun createAndShowDeleteAlertDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.delete_note))
+            .setMessage(getString(R.string.delete_note_message))
+            .setPositiveButton(getString(R.string.answer_yes)) { dialogInterface, i ->
+                noteViewModel.deleteNote(currentNote)
+            }
+            .setNegativeButton(getString(R.string.answer_no)) { dialogInterface, i ->
+                showToast(R.string.canceled_delete)
+            }
+            .create()
+            .show()
     }
 
     private fun loadNoteIfPresent() {
