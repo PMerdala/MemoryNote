@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/listFragment2">
+    app:startDestination="@id/listFragment">
 
     <fragment
-        android:id="@+id/listFragment2"
+        android:id="@+id/listFragment"
         android:name="pl.merdala.memorynote.presentation.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list">
