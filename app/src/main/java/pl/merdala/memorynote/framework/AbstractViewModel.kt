@@ -4,23 +4,20 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import pl.merdala.core.repository.NoteRepository
-import pl.merdala.core.usecase.AddNote
-import pl.merdala.core.usecase.GetAllNotes
-import pl.merdala.core.usecase.GetNote
-import pl.merdala.core.usecase.RemoveNote
+import pl.merdala.memorynote.framework.di.ApplicationModule
+import pl.merdala.memorynote.framework.di.DaggerViewModelComponent
+import javax.inject.Inject
 
 abstract class AbstractViewModel(application: Application) : AndroidViewModel(application) {
 
     protected val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    private val repository = NoteRepository(RoomNoteDataSource(application))
+    @Inject
+    protected lateinit var useCases: UseCases
 
-    protected val useCases = UseCases(
-        AddNote(repository),
-        GetNote(repository),
-        GetAllNotes(repository),
-        RemoveNote(repository)
-    )
+    init {
+        DaggerViewModelComponent.builder().applicationModule(ApplicationModule(application)).build()
+            .inject(this)
+    }
 
 }
