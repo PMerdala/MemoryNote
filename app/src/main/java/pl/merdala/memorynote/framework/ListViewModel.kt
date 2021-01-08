@@ -12,6 +12,7 @@ class ListViewModel(application: Application) : AbstractViewModel(application) {
     fun getNotes() {
         coroutineScope.launch {
             val newNotes = useCases.getAllNotes()
+            newNotes.forEach { note -> note.wordCount = useCases.getWordCount(note) }
             notes.postValue(newNotes)
         }
     }

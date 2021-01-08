@@ -34,16 +34,19 @@ class NotesListAdapter(private val notes: ArrayList<Note>, private val action: L
 
     inner class NoteViewHolder(private val binding: ItemNoteBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        private val context = binding.root.context
+
         @SuppressLint("SimpleDateFormat")
         fun bind(note: Note) {
             binding.title.text = note.title
             binding.content.text = note.content
             val sdf = SimpleDateFormat(
-                binding.root.context.getString(R.string.item_note_last_update_date_format)
+                context.getString(R.string.item_note_last_update_date_format)
             )
             val lastUpdateDate = Date(note.updateDate)
-            binding.updateDate.text = binding.updateDate.context.getString(R.string.last_update)
+            binding.updateDate.text = context.getString(R.string.last_update)
                 .format(sdf.format(lastUpdateDate))
+            binding.wordCount.text = context.getString(R.string.words_count).format(note.wordCount)
             binding.itemNoteLayout.setOnClickListener { action.onClick(note.id) }
         }
     }
