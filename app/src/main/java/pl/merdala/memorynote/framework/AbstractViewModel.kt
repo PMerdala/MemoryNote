@@ -16,7 +16,8 @@ abstract class AbstractViewModel(application: Application) : AndroidViewModel(ap
     protected lateinit var useCases: UseCases
 
     init {
-        DaggerViewModelComponent.builder().applicationModule(ApplicationModule(application)).build()
+        DaggerViewModelComponent.builder().applicationModule(ApplicationModule(getApplication()))
+            .build()
             .inject(this)
     }
 
