@@ -26,7 +26,7 @@
         android:gravity="top|start"
         android:hint="@string/content_hint"
         android:autofillHints="@string/content_hint"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
